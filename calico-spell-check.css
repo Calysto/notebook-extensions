@@ -1,0 +1,13 @@
+/**
+ *
+ *
+ * Calico Custom JavaScript for Jupyter Notebooks
+ *
+ *
+ **/
+
+/* This is for spell-check: */
+
+.CodeMirror .cm-spell-error {
+     background: url('typo/red-wavy-underline.gif') bottom repeat-x;
+}
