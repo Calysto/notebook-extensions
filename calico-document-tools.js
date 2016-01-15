@@ -602,7 +602,8 @@ define(["require"], function (require) {
             var cell = IPython.notebook.get_cell(c);
             if (cell.cell_type == "markdown") {
 		var cell_text = cell.get_text();
-		var re = new RegExp("(\\<a name\\=\".*?\"/>)*\\[.*?\\]\\((\#cite-[^\\)]+)\\)", "g");
+		//var re = new RegExp("(\\<a name\\=\".*?\"/>)*\\[.*?\\]\\((\#cite-[^\\)]+)\\)", "g");
+		var re = new RegExp("(\\<a name\\=\".*?\"/>)*\\[(^\\])*?\\]\\((\#cite-[^\\)]+)\\)", "g");
 		if (cell_text.match(re)) {
 		    cell_text = cell_text.replace(re, "[CITE]($2)");
 		    cell.set_text(cell_text);
