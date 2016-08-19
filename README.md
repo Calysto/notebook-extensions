@@ -7,9 +7,9 @@ This repository contains several Javascript extensions for Jupyter:
  * Create table of contents (TOC) and create references/citations
 * Spell check: spell check for markdown cells
 
-Part of the calico student interaction part:
+Student interaction:
 * Publish: your notebook, by copying it to a certain directory
-* Submit: 
+* Submit: copies notebook to instructor
 
 These extensions where once part of the [Calico project](http://calicoproject.org/).
 
@@ -22,15 +22,17 @@ Install:
 $ jupyter nbextension install https://github.com/Calysto/notebook-extensions/archive/master.zip
 ```
 
-Then enable this extension:
+Then enable the extensions you want:
 
 ```
-$ jupyter nbextension enable calico-document-tools
+$ jupyter nbextension enable calysto/document-tools/main
+$ jupyter nbextension enable calysto/cell-tools/main
+$ jupyter nbextension enable calysto/spell-check/main
+$ jupyter nbextension enable calysto/publish/main
+$ jupyter nbextension enable calysto/submit/main
 ```
 
-When you now open or reload a notebook, it should load the extension
-
-See also [this question on stackoverflow](http://stackoverflow.com/questions/32046241/how-to-add-automatically-extension-to-jupiter-ipython-notebook/32583739#32583739)
+When you now open or reload a notebook, it should load the extensions.
 
 Videos
 ------
