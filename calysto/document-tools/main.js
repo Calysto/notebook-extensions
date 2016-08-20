@@ -1,8 +1,8 @@
 /**
- * Calico Jupyter Notebooks Extensions
+ * Calysto Jupyter Notebooks Extensions
  *
- * Copyright (c) The Calico Project
- * http://calicoproject.org/ICalico
+ * Copyright (c) The Calysto Project
+ * http://github.com/Calysto/notebook-extensions
  *
  * Released under the BSD Simplified License
  *
