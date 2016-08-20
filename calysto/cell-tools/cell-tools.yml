@@ -3,3 +3,4 @@ Compatibility: 4.x
 Name: Cell Tools Buttons
 Main: main.js
 Description: adds buttons for cell tools (tab, columns, etc)
+Icon: cell-tools.png

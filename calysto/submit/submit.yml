@@ -3,3 +3,4 @@ Compatibility: 4.x
 Name: Submit Button
 Main: main.js
 Description: adds a submit button for submitting notebooks to another jupyterhub user
+Icon: submit.png

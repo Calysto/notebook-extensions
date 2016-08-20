@@ -3,3 +3,4 @@ Compatibility: 4.x
 Name: Document Tools Buttons
 Main: main.js
 Description: adds buttons for document formatting
+Icon: document-tools.png

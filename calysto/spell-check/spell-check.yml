@@ -3,3 +3,4 @@ Compatibility: 4.x
 Name: Spell-Check Markdown
 Main: main.js
 Description: adds a spell-check button for turning on/off spelling checker
+Icon: spell-check.png
