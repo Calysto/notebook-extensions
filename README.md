@@ -16,15 +16,26 @@ These extensions where once part of the [Calico project](http://calicoproject.or
 Install
 -------
 
-Install:
+First download this collection and cd into the folder (here, dollar-sign represents the shell prompt):
 
-```
-$ jupyter nbextension install https://github.com/Calysto/notebook-extensions/archive/master.zip
+```shell
+$ wget https://github.com/Calysto/notebook-extensions/archive/master.zip
+$ unzip master.zip
+$ cd notebook-extensions-master
+OR:
+$ git clone https://github.com/Calysto/notebook-extensions.git
+$ cd notebook-extensions
 ```
 
-Then enable the extensions you want:
+Next, install them into --system, --sys-prefix, or --user:
 
+```shell
+$ jupyter nbextension install calysto --user
 ```
+
+And finally, enable the extensions you want:
+
+```shell
 $ jupyter nbextension enable calysto/document-tools/main
 $ jupyter nbextension enable calysto/cell-tools/main
 $ jupyter nbextension enable calysto/spell-check/main
@@ -32,7 +43,10 @@ $ jupyter nbextension enable calysto/publish/main
 $ jupyter nbextension enable calysto/submit/main
 ```
 
-When you now open or reload a notebook, it should load the extensions.
+To check their status:
 
-Videos
-------
+```shell
+$ jupyter nbextension list
+```
+
+When you now open or reload a notebook, it should load the extensions.
