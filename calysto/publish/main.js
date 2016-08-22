@@ -21,9 +21,9 @@ define(["require"], function (require) {
 	var filename = path.substr(path.lastIndexOf('/') + 1);
 	path = path.substr(0, path.lastIndexOf('/'));
 	console.log('/home/' + user + '/' + path + '/' + filename);
-	console.log('~/Public/' + filename);
-	if (path.indexOf("Public") !== -1) {
-	    path = path.replace("Public", "");
+	console.log('~/public_html/' + filename);
+	if (path.indexOf("public_html") !== -1) {
+	    path = path.replace("public_html", "");
 	    require(['jquery',
 		 'base/js/dialog'
 		], function ($, dialog) {
@@ -50,7 +50,7 @@ define(["require"], function (require) {
 		    body.append($('<p/>').text("Copies:"));
 		    body.append($('<p/>').html($('<b/>').text("/home/" + user + '/' + path + '/' + filename)));
 		    body.append($('<p/>').text("to:"));
-		    body.append($('<p/>').html($('<b/>').text("~/Public/" + filename)));
+		    body.append($('<p/>').html($('<b/>').text("~/public_html/" + filename)));
 		    dialog.modal({
 			title: 'Publish a Notebook',
 			body: body,
@@ -99,7 +99,7 @@ def publish(src, dst): \n\
     os.chmod(dst, stat.S_IRUSR | stat.S_IWUSR | stat.S_IROTH | stat.S_IRGRP) \n\
     print("Ok") \n\
 \n\
-publish("/home/' + user + '/' + path + '/' + filename + '", "~/Public/' + filename + '")',
+publish("/home/' + user + '/' + path + '/' + filename + '", "~/public_html/' + filename + '")',
 							       callbacks, {silent: false});
 				
 				return true;
