@@ -14,6 +14,7 @@ define(["require"], function (require) {
         // Toggle on/off spelling checking on for markdown and heading cells
         // toggle it!
         var spelling_mode = (IPython.MarkdownCell.options_default.cm_config.mode == document.original_markdown_mode);
+        $('#toggle_spell_check').toggleClass('active', spelling_mode);
         //console.log(spelling_mode);
         // Change defaults for new cells:
         IPython.MarkdownCell.options_default.cm_config.mode = (spelling_mode ? "spell-check-markdown" : document.original_markdown_mode);
@@ -128,7 +129,8 @@ define(["require"], function (require) {
             {
                 'label'   : 'Toggle spell checking on a markdown cell',
                 'icon'    : (version === "2") ? 'icon-check-sign' : 'fa-check-square',
-                'callback': toggle_spell_check
+                'callback': toggle_spell_check,
+                'id'      : 'toggle_spell_check'
             }
         ]);
     }
