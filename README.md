@@ -1,15 +1,16 @@
 # Notebook-extensions
 
 This repository contains several Javascript extensions for Jupyter:
-* Cell tools: Two column and tabbed modes for input/output of notebook cells
-* Document tools:
+* **Cell tools**: Two column and tabbed modes for input/output of notebook cells
+* **Document tools**:
  * Sections: Move whole sections up and down, number sections.
  * Create table of contents (TOC) and create references/citations
-* Spell check: spell check for markdown cells
+* **Spell check**: spell check for markdown cells
+* **Annotate**: temporary drawing annotation layer
 
-Student interaction:
-* Publish: your notebook, by copying it to a certain directory
-* Submit: copies notebook to instructor
+User notebook sharing:
+* **Publish**: publish your notebook, by copying it to a certain directory (requires jupyterhub)
+* **Submit**: copies notebook to instructor (requires jupyerhub)
 
 These extensions where once part of the [Calico project](http://calicoproject.org/).
 
@@ -41,6 +42,7 @@ $ jupyter nbextension enable calysto/cell-tools/main
 $ jupyter nbextension enable calysto/spell-check/main
 $ jupyter nbextension enable calysto/publish/main
 $ jupyter nbextension enable calysto/submit/main
+$ jupyter nbextension enable calysto/annotate/main
 ```
 
 To check their status:
