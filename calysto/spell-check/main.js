@@ -13,11 +13,11 @@ define(["require"], function (require) {
     function toggle_spell_check() {
         // Toggle on/off spelling checking on for markdown and heading cells
         // toggle it!
-        var spelling_mode = (IPython.MarkdownCell.options_default.cm_config.mode == document.original_markdown_mode);
+        var spelling_mode = (require("notebook/js/textcell").MarkdownCell.options_default.cm_config.mode == document.original_markdown_mode);
         $('#toggle_spell_check').toggleClass('active', spelling_mode);
         //console.log(spelling_mode);
         // Change defaults for new cells:
-        IPython.MarkdownCell.options_default.cm_config.mode = (spelling_mode ? "spell-check-markdown" : document.original_markdown_mode);
+        require("notebook/js/textcell").MarkdownCell.options_default.cm_config.mode = (spelling_mode ? "spell-check-markdown" : document.original_markdown_mode);
         if (document.original_heading_mode !== undefined) {
             IPython.HeadingCell.options_default.cm_config = {"mode": (spelling_mode ? "spell-check-heading" : document.original_heading_mode)};
         }
