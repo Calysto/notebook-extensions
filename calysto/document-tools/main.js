@@ -11,14 +11,7 @@
 define(["require"], function (require) {
 
     function ip_version() {
-	if (IPython.version[0] === "2")
-	    return 2;
-	else if (IPython.version[0] === "3")
-	    return 3;
-	else if (IPython.version[0] === "4")
-	    return 4;
-	else
-	    throw "IPython version not supported";
+	return parseInt(IPython.version[0]);
     }
 
     function break_into_sections(index) {
