@@ -583,8 +583,11 @@ define(["require"], function (require) {
     }
     
     function generate_references() {
-	read_bibliography();
-	var citations = get_citations();
+	var all_citations = read_bibliography();
+        var citations = get_citations();
+        if (all_citations) {
+            citations = get_remaining_bib_entries(citations);
+        }
 	create_reference_section(citations);
 	update_refs(citations);
     }
@@ -733,12 +736,16 @@ define(["require"], function (require) {
             var cite = citations[citation];
 	    if (cite != undefined) {
 		var ref_index;
-		references = references + "<a name=\"" + citation.substring(1) + "\"/><sup>"
-		for (ref_index in cite["REFS"]) {
-		    var refs = cite["REFS"][ref_index]
-		    references += "[^](#ref-" +  refs + ") "
-		}
-		references += ("</sup>" + tex2html(cite["AUTHOR"]) + ". " + 
+                if ("REFS" in cite) {
+                    references = references + "<a name=\"" + citation.substring(1) + "\"/><sup>"
+
+                    for (ref_index in cite["REFS"]) {
+                        var refs = cite["REFS"][ref_index]
+                        references += "[^](#ref-" +  refs + ") "
+                    }
+                    references += "</sup>"
+                }
+		references += ( tex2html(cite["AUTHOR"]) + ". " + 
 			       cite["YEAR"] + ". _" + tex2html(cite["TITLE"]) + "_.");
 		if (cite["URL"] != undefined) {
 		    references += " [URL](" + cite["URL"].replace(/^"/,"").replace(/"$/,"") + ")";
@@ -749,6 +756,19 @@ define(["require"], function (require) {
 	reference_cell.unrender();
 	reference_cell.set_text(references);
 	reference_cell.render();
+    }
+
+
+    function get_remaining_bib_entries(citations) {
+
+        for (var key in document.bibliography) {
+            cite_key = "\#cite-".concat(key).toLowerCase()
+            if (! (cite_key in citations)) {
+                citations[cite_key] = document.bibliography[key]
+            }
+        }
+
+        return citations;
     }
     
     function get_citations() {
@@ -772,7 +792,7 @@ define(["require"], function (require) {
 			var lookup = document.bibliography[citation.substring(6).toUpperCase()];
 			if (lookup != undefined) {
 			    lookup["REFS"] = [refs]
-			    citations[match[1]] = lookup;
+			    citations[match[1].toLowerCase()] = lookup;
 			}
                     }
                     refs++;
@@ -794,13 +814,24 @@ define(["require"], function (require) {
 	return document.bibtex_parser.getEntries();
     }
     
+    //will return true or false
+    //true if <!--bibtex* was used
+    //false if the * char was not present
+    //if the bib was read from Bibliography.ipynb then it will return false
     function read_bibliography() {
 	// Read the Bibliography notebook
 	document.bibliography = {};
+        var glob_present = false;
 	// First, check to see if there is a <!--bibtex here
 	var bibtex = find_cell(".*", "<!--bibtex");
 	if (bibtex != undefined) {
-	    var cell_text = bibtex.get_text().replace(/^<!--bibtex/, "");
+            var cell_text = bibtex.get_text()
+            if (cell_text.includes("<!--bibtex*")) {
+                glob_present = true
+                cell_text = cell_text.replace(/^<!--bibtex\*/, "");
+            } else {
+                cell_text = cell_text.replace(/^<!--bibtex/, "");
+            }
 	    cell_text = cell_text.replace(/-->\s*$/, "");
 	    var json = parse_bibtex(cell_text);
             $.extend(document.bibliography, json);
@@ -850,6 +881,8 @@ define(["require"], function (require) {
 		}
 	    });
 	}
+
+        return glob_present;
     }
     
     function show_bibliography() {
