@@ -1,5 +1,5 @@
 Type: Jupyter Notebook Extension
-Compatibility: 4.x
+Compatibility: Jupyter 4.x, 5.x
 Name: Publish Button
 Main: main.js
 Description: adds a publish button for viewing notebooks on server (needs publichandler.py)

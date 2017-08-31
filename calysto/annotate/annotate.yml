@@ -1,5 +1,5 @@
 Type: Jupyter Notebook Extension
-Compatibility: 4.x
+Compatibility: Jupyter 4.x, 5.x
 Name: Annotate Button
 Main: main.js
 Description: adds a temporary annotation drawing layer on the notebook
