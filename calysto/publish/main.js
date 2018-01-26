@@ -10,11 +10,15 @@
 
 define(["require"], function (require) {
     function publish_notebook() {
-	// http://jupyter.cs.brynmawr.edu/user/dblank/notebooks/Calico/notebooks/BrainScrew/BrainScrew%20Examples.ipynb
+	//    change:
+	// https://jupyter.brynmawr.edu/user/dblank/notebooks/HC%20%20JupyterHub%20Dicussion.ipynb
+	//    to:
+	// https://jupyter.brynmawr.edu/services/public/dblank/HC%20%20JupyterHub%20Dicussion.ipynb
 	var base_url = document.URL.substr(0,document.URL.indexOf('/notebooks/'));
+	// https://jupyter.brynmawr.edu/user/dblank
 	var user = document.URL.substr(document.URL.indexOf('/user/') + 6);
 	user = user.substr(0, user.indexOf('/notebooks/'));
-	base_url = base_url.replace(/\/user\//g, "/hub/");
+	base_url = base_url.replace(/\/user\//g, "/services/public/");
 	// BrainScrew%20Examples.ipynb
 	var path = IPython.notebook.notebook_path;
 	path = path.replace(/"/g, '\\"');
@@ -29,7 +33,7 @@ define(["require"], function (require) {
 		], function ($, dialog) {
 		    var body = $('<div/>');
 		    body.append($('<h4/>').text('Your notebook is publically available at:'));
-		    var url = base_url + '/public/' + path.replace(/ /g, "%20") + '/' + filename.replace(/ /g, "%20");
+		    var url = base_url + path.replace(/ /g, "%20") + '/' + filename.replace(/ /g, "%20");
 		    var link = $('<a target="_blank"/>').attr('href', url);
 		    link.text(url);
 		    body.append($('<p/>').html(link));
