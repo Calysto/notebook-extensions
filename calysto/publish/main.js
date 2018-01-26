@@ -32,7 +32,7 @@ define(["require"], function (require) {
 		 'base/js/dialog'
 		], function ($, dialog) {
 		    var body = $('<div/>');
-		    body.append($('<h4/>').text('Your notebook is publically available at:'));
+		    body.append($('<h4/>').text('Your notebook is publicly available at:'));
 		    var url = base_url + path.replace(/ /g, "%20") + '/' + filename.replace(/ /g, "%20");
 		    var link = $('<a target="_blank"/>').attr('href', url);
 		    link.text(url);
