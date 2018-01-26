@@ -64,8 +64,8 @@ define(["require"], function (require) {
 			        function handle_output(out) {
 				    if ((out.content.name === "stdout") && (out.content.text.indexOf("Ok") !== -1)) {
 					var body = $('<div/>');
-					body.append($('<h4/>').text('Your notebook is now publically available at:'));
-					var url = base_url + '/public/' + filename.replace(/ /g, "%20");
+					body.append($('<h4/>').text('Your notebook is now publicly available at:'));
+					var url = base_url + filename.replace(/ /g, "%20");
 					var link = $('<a target="_blank"/>').attr('href', url);
 					link.text(url);
 					body.append($('<p/>').html(link));
