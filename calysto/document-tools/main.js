@@ -583,53 +583,72 @@ define(["require"], function (require) {
     }
     
     function generate_references() {
-	var all_citations = read_bibliography();
+	    var all_citations = read_bibliography();
+        refs_to_markdown();
         var citations = get_citations();
         if (all_citations) {
             citations = get_remaining_bib_entries(citations);
         }
-	create_reference_section(citations);
-	update_refs(citations);
+	    markdown_to_refs(citations);
+	    create_reference_section(citations);
     }
     
-    function update_refs(citations) {
-	// go through and replace all (<a id="..."/>)*[.*](#cite-.*) with [CITE](#cite-.*)
-	for (var c in IPython.notebook.get_cells()) {
+    function refs_to_markdown() {
+        // go through and replace all rendered "<a id="ref-$3" href="#cite-$1>$2</a>" with 
+        // their markdown equivalents, [$2](#cite-$1). Rerender the cells to get
+        // id-less rendered
+        // links
+        for (var c in IPython.notebook.get_cells()) {
+            var need_to_render = false;
             var cell = IPython.notebook.get_cell(c);
             if (cell.cell_type == "markdown") {
-		var cell_text = cell.get_text();
-		var re = new RegExp("(\\<a id\\=\".*?\"/>)*\\[(^\\])*?\\]\\((\#cite-[^\\)]+)\\)", "g");
-		if (cell_text.match(re)) {
-		    cell_text = cell_text.replace(re, "[CITE]($2)");
-		    cell.set_text(cell_text);
-		}
+                var cell_text = cell.get_text();
+                var re = new RegExp(/<a id="ref-\d*" href="(#[^"]*)">([^<]*)<\/a>/, "i");
+                var match = cell_text.match(re)
+                while (match) {
+                    var citation = match[1];
+                    var inline_text = match[2];
+                    cell_text = cell_text.replace(re, "[" + inline_text + "](" + citation + ")");
+                    cell.set_text(cell_text);
+                    need_to_render = true;
+                    match = cell_text.match(re);
+                }
+            }
+            if (need_to_render) {
+                cell.unrender()
+                cell.render()
+	        }
 	    }
-	}
-	// then go through and replace each [CITE](#cite-.*) with <a id="ref-"/>[(AUTHORS)](#cite-...)
-	var refs = 1;
-	for (var c in IPython.notebook.get_cells()) {
-	    var need_to_render = false;
+    }
+
+
+    function markdown_to_refs(citations) {
+        // go through and replace each [$1](#cite-$2) with <a id="ref-$3" href="#cite-$2">$1</a>
+	    var refs = 1;
+	    for (var c in IPython.notebook.get_cells()) {
+            var need_to_render = false;
             var cell = IPython.notebook.get_cell(c);
             if (cell.cell_type == "markdown") {
-		var cell_text = cell.get_text();
-		var re = new RegExp("\\[CITE\\]\\(\#cite-[^\\)]+\\)");
-		var match = cell_text.match(re);
-		while (match) {
-		    var citation = match[0].slice(7, -1); // #cite-...
-		    var cite = citations[citation];
-		    var reference = make_reference(cite, refs);
-		    cell_text = cell_text.replace(re, "<a id=\"ref-" + refs + "\"/>[" + reference + "](" + citation + ")");
-		    cell.set_text(cell_text);
-		    need_to_render = true;
-		    match = cell_text.match(re);
-		    refs++;
-		}
+		        var cell_text = cell.get_text();
+		        var re = new RegExp(/\[([^\]]*)\]\((#cite-[^\)]*)\)/, "i");
+		        var match = cell_text.match(re);
+		        while (match) {
+		            var citation = match[2];
+                    var inline_text = match[1];
+                    var cite = citations[citation];
+		            //var reference = make_reference(cite, refs);
+		            cell_text = cell_text.replace(re, "<a id=\"ref-" + refs + "\" href=\"" + citation + "\">" + inline_text + "</a>");
+		            cell.set_text(cell_text);
+		            need_to_render = true;
+		            match = cell_text.match(re);
+		            refs++;
+		        }
+	        }
+	        if (need_to_render) {
+		        cell.unrender();
+		        cell.render();
+	        }
 	    }
-	    if (need_to_render) {
-		cell.unrender();
-		cell.render();
-	    }
-	}
     }
     
     function make_reference(cite, refs) {
@@ -719,42 +738,41 @@ define(["require"], function (require) {
     }
     
     function create_reference_section(citations) {
-	// If there is a References section, replace it:
-	var reference_cell = find_cell("markdown", "#+ *References");
-	var cells = IPython.notebook.get_cells();
-	// default to top-level heading:
-	var references = "# References\n\n";
-	if (reference_cell == undefined) {
+	    // If there is a References section, replace it:
+	    var reference_cell = find_cell("markdown", "#+ *References");
+	    var cells = IPython.notebook.get_cells();
+	    // default to top-level heading:
+	    var references = "# References\n\n";
+	    if (reference_cell == undefined) {
             reference_cell = IPython.notebook.select(cells.length-1).insert_cell_below("markdown");
-	} else {
-	    // already exists:
-	    references = reference_cell.get_text().match("#+ *References")[0] + "\n\n";
-	}
-	var citation;
-	for (citation in citations) {
+	    } else {
+	        // already exists:
+	        references = reference_cell.get_text().match("#+ *References")[0] + "\n\n";
+    	}
+	    var citation;
+	    for (citation in citations) {
             var cite = citations[citation];
-	    if (cite != undefined) {
-		var ref_index;
+	        if (cite != undefined) {
+		        var ref_index;
                 if ("REFS" in cite) {
-                    references = references + "<a id=\"" + citation.substring(1) + "\"/><sup>"
+                    references += "<a id=\"" + citation.substring(1) + "\"/><sup>";
 
                     for (ref_index in cite["REFS"]) {
                         var refs = cite["REFS"][ref_index]
-                        references += "[^](#ref-" +  refs + ") "
+                        references += "<a href=#ref-" + refs + ">[^]</a>"
                     }
                     references += "</sup>"
                 }
-		references += ( tex2html(cite["AUTHOR"]) + ". " + 
-			       cite["YEAR"] + ". _" + tex2html(cite["TITLE"]) + "_.");
-		if (cite["URL"] != undefined) {
-		    references += " [URL](" + cite["URL"].replace(/^"/,"").replace(/"$/,"") + ")";
-		}
-		references += "\n\n";
+		        references += ( tex2html(cite["AUTHOR"]) + ". " + cite["YEAR"] + ". _" + tex2html(cite["TITLE"]) + "_.");
+		        if (cite["URL"] != undefined) {
+		            references += " [URL](" + cite["URL"].replace(/^"/,"").replace(/"$/,"") + ")";
+		        }
+		        references += "\n\n";
+	        }
 	    }
-	}
-	reference_cell.unrender();
-	reference_cell.set_text(references);
-	reference_cell.render();
+	    reference_cell.unrender();
+	    reference_cell.set_text(references);
+	    reference_cell.render();
     }
 
 
