@@ -593,20 +593,19 @@ define(["require"], function (require) {
     }
     
     function update_refs(citations) {
-	// go through and replace all (<a name="..."/>)*[.*](#cite-.*) with [CITE](#cite-.*)
+	// go through and replace all (<a id="..."/>)*[.*](#cite-.*) with [CITE](#cite-.*)
 	for (var c in IPython.notebook.get_cells()) {
             var cell = IPython.notebook.get_cell(c);
             if (cell.cell_type == "markdown") {
 		var cell_text = cell.get_text();
-		//var re = new RegExp("(\\<a name\\=\".*?\"/>)*\\[.*?\\]\\((\#cite-[^\\)]+)\\)", "g");
-		var re = new RegExp("(\\<a name\\=\".*?\"/>)*\\[(^\\])*?\\]\\((\#cite-[^\\)]+)\\)", "g");
+		var re = new RegExp("(\\<a id\\=\".*?\"/>)*\\[(^\\])*?\\]\\((\#cite-[^\\)]+)\\)", "g");
 		if (cell_text.match(re)) {
 		    cell_text = cell_text.replace(re, "[CITE]($2)");
 		    cell.set_text(cell_text);
 		}
 	    }
 	}
-	// then go through and replace each [CITE](#cite-.*) with <a name="ref-"/>[(AUTHORS)](#cite-...)
+	// then go through and replace each [CITE](#cite-.*) with <a id="ref-"/>[(AUTHORS)](#cite-...)
 	var refs = 1;
 	for (var c in IPython.notebook.get_cells()) {
 	    var need_to_render = false;
@@ -619,7 +618,7 @@ define(["require"], function (require) {
 		    var citation = match[0].slice(7, -1); // #cite-...
 		    var cite = citations[citation];
 		    var reference = make_reference(cite, refs);
-		    cell_text = cell_text.replace(re, "<a name=\"ref-" + refs + "\"/>[" + reference + "](" + citation + ")");
+		    cell_text = cell_text.replace(re, "<a id=\"ref-" + refs + "\"/>[" + reference + "](" + citation + ")");
 		    cell.set_text(cell_text);
 		    need_to_render = true;
 		    match = cell_text.match(re);
@@ -737,7 +736,7 @@ define(["require"], function (require) {
 	    if (cite != undefined) {
 		var ref_index;
                 if ("REFS" in cite) {
-                    references = references + "<a name=\"" + citation.substring(1) + "\"/><sup>"
+                    references = references + "<a id=\"" + citation.substring(1) + "\"/><sup>"
 
                     for (ref_index in cite["REFS"]) {
                         var refs = cite["REFS"][ref_index]
@@ -792,7 +791,7 @@ define(["require"], function (require) {
 			var lookup = document.bibliography[citation.substring(6).toUpperCase()];
 			if (lookup != undefined) {
 			    lookup["REFS"] = [refs]
-			    citations[match[1].toLowerCase()] = lookup;
+			    citations[match[1]] = lookup;
 			}
                     }
                     refs++;
@@ -881,7 +880,6 @@ define(["require"], function (require) {
 		}
 	    });
 	}
-
         return glob_present;
     }
     
