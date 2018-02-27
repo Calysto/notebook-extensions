@@ -31,24 +31,24 @@ $ cd notebook-extensions
 Next, install them into --system, --sys-prefix, or --user:
 
 ```shell
-$ jupyter nbextension install calysto --user
+jupyter nbextension install calysto --user
 ```
 
 And finally, enable the extensions you want:
 
 ```shell
-$ jupyter nbextension enable calysto/document-tools/main
-$ jupyter nbextension enable calysto/cell-tools/main
-$ jupyter nbextension enable calysto/spell-check/main
-$ jupyter nbextension enable calysto/publish/main
-$ jupyter nbextension enable calysto/submit/main
-$ jupyter nbextension enable calysto/annotate/main
+jupyter nbextension enable calysto/document-tools/main
+jupyter nbextension enable calysto/cell-tools/main
+jupyter nbextension enable calysto/spell-check/main
+jupyter nbextension enable calysto/publish/main
+jupyter nbextension enable calysto/submit/main
+jupyter nbextension enable calysto/annotate/main
 ```
 
 To check their status:
 
 ```shell
-$ jupyter nbextension list
+jupyter nbextension list
 ```
 
 When you now open or reload a notebook, it should load the extensions.
