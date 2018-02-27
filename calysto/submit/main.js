@@ -147,14 +147,17 @@ print("[" + ", ".join(["[\\"%s\\", \\"%s\\"]" % pair for pair in [re.match("/hom
     };
     
     var add_toolbar_buttons = function () {
+	Jupyter.actions.register({
+	    'help'   : 'Submit this notebook',
+	    'icon'    : 'fa-inbox',
+	    'handler': submit_notebook
+	}, 'submit_notebook', 'submit');
+
 	IPython.toolbar.add_buttons_group([
-	    // select your icon from http://fortawesome.github.io/Font-Awesome/icons
 	    {
-		'label'   : 'Submit this notebook',
-		'icon'    : 'fa-inbox',
-		'callback': submit_notebook
+		'action': 'submit:submit_notebook'
 	    }
-	]);
+	], 'submit-buttons');
     };
     
     return {

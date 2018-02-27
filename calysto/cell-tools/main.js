@@ -219,21 +219,26 @@ define(["require"], function (require) {
     };
 
     var add_toolbar_buttons = function () {
-	// string of first digit, "2" or "3" for now
-	var version = IPython.version.substring(0, 1);
+	Jupyter.actions.register({
+	    'help'   : 'Toggle tabbed view on a code cell',
+	    'icon'    : 'fa-folder', 
+	    'handler': toggle_tabs
+	}, 'toggle_tabs', 'cell_tools');
+
+	Jupyter.actions.register({
+	    'help'   : 'Toggle two-column view on a code cell',
+	    'icon'    : 'fa-columns', 
+	    'handler': toggle_columns
+	}, 'toggle_columns', 'cell_tools');
+
 	IPython.toolbar.add_buttons_group([
-	    // select your icon from http://fortawesome.github.io/Font-Awesome/icons
 	    {
-		'label'   : 'Toggle tabbed view on a code cell',
-		'icon'    : (version === "2") ? 'icon-folder-close-alt' : 'fa-folder', 
-		'callback': toggle_tabs
+		'action': 'cell_tools:toggle_tabs'
 	    },
 	    {
-		'label'   : 'Toggle two-column view on a code cell',
-		'icon'    : (version === "2") ? 'icon-columns' : 'fa-columns', 
-		'callback': toggle_columns
+		'action': 'cell_tools:toggle_columns'
 	    }
-	]);
+	], 'cell_tools-buttons');
     };
     
     var load_ipython_extension = function () {

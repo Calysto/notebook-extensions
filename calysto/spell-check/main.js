@@ -123,17 +123,20 @@ define(["require"], function (require) {
     };
 
     var add_toolbar_buttons = function () {
-        var version = IPython.version.substring(0, 1);
+
+	Jupyter.actions.register({
+            'help'    : 'Toggle spell checking on a markdown cell',
+            'icon'    : 'fa-check-square',
+            'handler' : toggle_spell_check,
+            'id'      : 'toggle_spell_check'
+        }, 'toggle_spell_check', 'spell_check');
+
         IPython.toolbar.add_buttons_group([
-            // select your icon from http://fortawesome.github.io/Font-Awesome/icons
             {
-                'label'   : 'Toggle spell checking on a markdown cell',
-                'icon'    : (version === "2") ? 'icon-check-sign' : 'fa-check-square',
-                'callback': toggle_spell_check,
-                'id'      : 'toggle_spell_check'
+		'action' : 'spell_check:toggle_spell_check'
             }
-        ]);
-    }
+        ], 'spell_check-buttons');
+    };
 
     return {
         load_ipython_extension : load_ipython_extension,

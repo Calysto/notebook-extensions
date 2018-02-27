@@ -1241,36 +1241,54 @@ define(["require"], function (require) {
 	}
     };
 
+    Jupyter.actions.register({
+	'help'   : 'Move Section Up',
+	'icon'    : 'fa-level-up', 
+	'handler': move_section_up
+    }, 'move_section_up', 'document_tools');
+
+    Jupyter.actions.register({
+	'help'   : 'Move Section Down',
+	'icon'    : 'fa-level-down', 
+	'handler': move_section_down
+    }, 'move_section_down', 'document_tools');
+
+    Jupyter.actions.register({
+	'help'   : 'Number Sections',
+	'icon'    : 'fa-sort-numeric-asc', 
+	'handler': section_label
+    }, 'section_label', 'document_tools');
+
+    Jupyter.actions.register({
+	'help'   : 'Generate Table of Contents',
+	'icon'    : 'fa-list', 
+	'handler': table_of_contents
+    }, 'table_of_contents', 'document_tools');
+
     var add_toolbar_buttons = function () {
-	var version = IPython.version.substring(0, 1);
+	Jupyter.actions.register({
+	    'help'   : 'Generate References',
+	    'icon'    : 'fa-book', 
+	    'handler': generate_references
+	}, 'generate_references', 'document_tools');
+    
 	IPython.toolbar.add_buttons_group([
-	    // select your icon from http://fortawesome.github.io/Font-Awesome/icons
 	    {
-		'label'   : 'Move Section Up',
-		'icon'    : (version === "2") ? 'icon-level-up' : 'fa-level-up', 
-		'callback': move_section_up
+		'action': 'document_tools:move_section_up'
 	    },
 	    {
-		'label'   : 'Move Section Down',
-		'icon'    : (version === "2") ? 'icon-level-down' : 'fa-level-down', 
-		'callback': move_section_down
+		'action': 'document_tools:move_section_down'
 	    },
 	    {
-		'label'   : 'Number Sections',
-		'icon'    : (version === "2") ? 'icon-sort-by-order' : 'fa-sort-numeric-asc', 
-		'callback': section_label
+		'action': 'document_tools:section_label'
 	    },
 	    {
-		'label'   : 'Generate Table of Contents',
-		'icon'    : (version === "2") ? 'icon-sort-by-attributes-alt' : 'fa-list', 
-		'callback': table_of_contents
+		'action': 'document_tools:table_of_contents'
 	    },
 	    {
-		'label'   : 'Generate References',
-		'icon'    : (version === "2") ? 'icon-book' : 'fa-book', 
-		'callback': generate_references
-	    }
-	]);
+		'action': 'document_tools:generate_references'
+	    },
+	], 'document_tools-buttons');
     };
     
     require(["./bibtex"], function () {

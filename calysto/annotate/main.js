@@ -176,14 +176,17 @@ define(["require"], function (require) {
     };
     
     var add_toolbar_buttons = function () {
+	Jupyter.actions.register({
+	    'help'   : 'Annotate',
+	    'icon'    : 'fa-pencil',
+	    'handler': annotate
+        }, 'annotate', 'annotate');
+
 	IPython.toolbar.add_buttons_group([
-	    // select your icon from http://fortawesome.github.io/Font-Awesome/icons
 	    {
-		'label'   : 'Annotate',
-		'icon'    : 'fa-pencil',
-		'callback': annotate
+		'action': 'annotate:annotate'
 	    }
-	]);
+	], 'annotate-buttons');
     };
     
     return {
