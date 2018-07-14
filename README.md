@@ -12,7 +12,7 @@ User notebook sharing:
 * **Publish**: publish your notebook, by copying it to a certain directory (requires jupyterhub)
 * **Submit**: copies notebook to instructor (requires jupyerhub)
 
-These extensions where once part of the [Calico project](http://calicoproject.org/).
+These extensions were once part of the [Calico project](http://calicoproject.org/).
 
 Install
 -------
