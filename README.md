@@ -3,8 +3,8 @@
 This repository contains several Javascript extensions for Jupyter:
 * **Cell tools**: Two column and tabbed modes for input/output of notebook cells
 * **Document tools**:
- * Sections: Move whole sections up and down, number sections.
- * Create table of contents (TOC) and create references/citations
+  * Sections: Move whole sections up and down, number sections.
+  * Create table of contents (TOC) and create references/citations
 * **Spell check**: spell check for markdown cells
 * **Annotate**: temporary drawing annotation layer
 
