@@ -150,12 +150,13 @@ function BibtexParser() {
 
   this.key = function() {
     var start = this.pos;
+    var pattern = "[a-zA-Z0-9_:\\+\\./-]";
     while(true) {
       if (this.pos == this.input.length) {
         throw "Runaway key";
       }
     
-      if (this.input[this.pos].match("[a-zA-Z0-9_:\\./-]")) {
+      if (this.input[this.pos].match(pattern)) {
         this.pos++
       } else {
         return this.input.substring(start, this.pos).toUpperCase();
